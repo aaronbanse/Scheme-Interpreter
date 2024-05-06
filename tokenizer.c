@@ -47,6 +47,16 @@ Item *tokenize() {
         charRead = fgetc(stdin);//keep moving till it's something else
         continue;
       }
+        //matching comments
+      if (charRead == ';') {
+        while(charRead != '\n' && charRead != EOF) {
+          charRead=fgetc(stdin);
+        }
+      if(charRead==EOF) break;
+      continue;
+      }
+
+
 
       Item *token=makeNull();//there should be something to tokenize, lets make
                              //a placeholder for that token
@@ -75,26 +85,18 @@ Item *tokenize() {
         char *temp_string=talloc(sizeof(char)*(TOKEN_LENGTH_LIMIT+1));
         int i=0;
         while(i<TOKEN_LENGTH_LIMIT) {//fill in the temporary string
-          temp_string[i]=charRead;
           charRead=fgetc(stdin);
-          i++;
           if(charRead=='\"' || charRead ==EOF) break;//have we reached the end?
+          temp_string[i]=charRead;
+          i++;
         }
         if(charRead==EOF) error("unexpected end of input while reading string");
         if(i==TOKEN_LENGTH_LIMIT) error("string longer than limit of 300 characters");
-        temp_string[i]='\"';//otherwise we broke cause of ending "
-        temp_string[i+1]='\0';//so we finish the string
+        temp_string[i]='\0';//so we finish the string
         token->s=temp_string;
         charRead=fgetc(stdin);
         if(!isDelim(charRead)) error("No delimiter after string");
         ungetc(charRead,stdin);
-
-        //matching comments
-      } else if (charRead == ';') {
-        while(charRead != '\n' && charRead != EOF) {
-          charRead=fgetc(stdin);
-        }
-        if(charRead==EOF) break;
 
         //matching booleans
       } else if (charRead == '#') {
@@ -214,7 +216,7 @@ void displayTokens(Item *list) {
   while(list->type==CONS_TYPE) {
     Item *token=list->c.car;
     if(token->type==STR_TYPE)
-      printf("%s:string\n",token->s);
+      printf("\"%s\":string\n",token->s);
     if(token->type==SYMBOL_TYPE)
       printf("%s:symbol\n",token->s);
     if(token->type==OPEN_TYPE)
@@ -229,9 +231,10 @@ void displayTokens(Item *list) {
       printf("%i:integer\n",token->i);
     if(token->type==DOUBLE_TYPE)
       printf("%lf:double\n",token->d);
-    if(token->type==BOOL_TYPE) {
+    if(token->type==BOOL_TYPE)
       printf("#%c:boolean\n",token->i? 't':'f');
-    }
+    if(token->type==NULL_TYPE)
+      printf("null:null\n");
     list=cdr(list);//move to next item in list
   }
 }
