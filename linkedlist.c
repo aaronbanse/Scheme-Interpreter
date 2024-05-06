@@ -50,33 +50,12 @@ void display(Item *list) {
 
 // Takes in list, returns new list in reverse order
 Item *reverse(Item *list) {
-    Item *oldList = list;
-    Item *child = talloc(sizeof(Item));
-    child->type = NULL_TYPE;
-    while(!isNull(list)) {
-        Item *newList = talloc(sizeof(Item));
-        newList->type = CONS_TYPE;
-        newList->c.cdr = child;
-
-        newList->c.car = talloc(sizeof(Item));
-        car(newList)->type = car(list)->type;
-
-        itemType t = car(list)->type;
-        if(t == INT_TYPE || t == BOOL_TYPE) {
-            car(newList)->i = car(list)->i;
-        }
-        if(t == DOUBLE_TYPE) {
-            car(newList)->d = car(list)->d;
-        }
-        if(t == STR_TYPE || t == SYMBOL_TYPE) {
-            car(newList)->s = talloc(sizeof(char) * (strlen(car(list)->s) + 1));
-            strcpy(car(newList)->s, car(list)->s);
-        }
-        
-        child = newList;
-        list = cdr(list);
-    }
-    return child;
+    Item *newList = makeNull();
+  while(!isNull(list)){
+    newList=cons(car(list),newList);
+    list=cdr(list);
+  }
+  return newList;
 }
 
 // Return car of list
