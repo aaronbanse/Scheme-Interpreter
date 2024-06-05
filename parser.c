@@ -27,6 +27,8 @@ void printToken(Item *tree) {
   case NULL_TYPE:
     printf("()");
     break;
+  case VOID_TYPE:
+    break;
   default:
     printf("%s",tree->s);
     break;
@@ -74,20 +76,30 @@ Item *parse(Item *tokens) {
   //return (stack);
 }
 
-
-// Prints the tree to the screen in a readable fashion. It should look just like
-// Scheme code; use parentheses to indicate subtrees.
-void printTree(Item *tree) {
+//print the contents of a list
+void printList(Item *tree) {
   while(tree->type==CONS_TYPE){
     if(car(tree)->type==CONS_TYPE) {
       printf("(");
-      printTree(car(tree));
+      printList(car(tree));
       printf(")");
     } else {
       printToken(car(tree));
     }
-    if(cdr(tree)->type!=NULL_TYPE)
+    if(cdr(tree)->type!=NULL_TYPE && car(tree)->type!=VOID_TYPE)
       printf(" ");
     tree=cdr(tree);
   }
+  if(tree->type!=NULL_TYPE) {
+    //the list wasn't null terminated print a dot and the cdr
+    printf(". ");
+    printToken(tree);
+  }
+}
+
+// Prints the tree to the screen in a readable fashion. It should look just like
+// Scheme code; use parentheses to indicate subtrees.
+void printTree(Item *tree) {
+  printList(tree);
+  printf("\n");
 }
