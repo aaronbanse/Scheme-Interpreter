@@ -1,2 +1,2 @@
 # Scheme-Interpreter
-Interpreter for the Scheme language written in C
+Interpreter for the Scheme language written in C.
