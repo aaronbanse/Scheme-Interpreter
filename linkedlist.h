@@ -14,26 +14,19 @@ Item *cons(Item *newCar, Item *newCdr);
 // readable format
 void display(Item *list);
 
-// Return a new list that is the reverse of the one that is passed in. No stored
-// data within the linked list should be duplicated; rather, a new linked list
-// of CONS_TYPE nodes should be created, that point to items in the original
-// list.
+// Return a new list that is the reverse of the one that is passed in.
 Item *reverse(Item *list);
 
-// Utility to make it less typing to get car item. Use assertions to make sure
-// that this is a legitimate operation.
+// Utility to make it less typing to get car item.
 Item *car(Item *list);
 
-// Utility to make it less typing to get cdr item. Use assertions to make sure
-// that this is a legitimate operation.
+// Utility to make it less typing to get cdr item.
 Item *cdr(Item *list);
 
-// Utility to check if pointing to a NULL_TYPE item. Use assertions to make sure
-// that this is a legitimate operation.
+// Utility to check if pointing to a NULL_TYPE item.
 bool isNull(Item *item);
 
-// Measure length of list. Use assertions to make sure that this is a legitimate
-// operation.
+// Measure length of list.
 int length(Item *item);
 
 
