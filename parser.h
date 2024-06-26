@@ -8,8 +8,7 @@
 Item *parse(Item *tokens);
 
 
-// Prints the tree to the screen in a readable fashion. It should look just like
-// Scheme code; use parentheses to indicate subtrees.
+// Prints the tree to the screen in a readable fashion.
 void printTree(Item *tree);
 
 
